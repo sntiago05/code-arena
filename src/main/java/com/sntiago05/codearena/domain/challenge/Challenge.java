@@ -76,21 +76,21 @@ public class Challenge {
 
     private void setCreatedAt(LocalDateTime createdAt) {
         if (createdAt == null) {
-            throw new NullAttributeException("startTime");
+            throw new NullAttributeException("created at");
         }
         this.createdAt = createdAt;
         if (this.deadLine != null && this.createdAt.isAfter(this.deadLine)) {
-            throw new InvalidTimeRangeException("startTime cannot be after endTime");
+            throw new InvalidTimeRangeException("created at cannot be after endTime");
         }
     }
 
     private void setDeadLine(LocalDateTime deadLine) {
         if (deadLine == null) {
-            throw new NullAttributeException("endTime");
+            throw new NullAttributeException("dead line");
         }
         this.deadLine = deadLine;
         if (this.createdAt != null && this.deadLine.isBefore(this.createdAt)) {
-            throw new InvalidTimeRangeException("endTime cannot be before startTime");
+            throw new InvalidTimeRangeException("deadline cannot be before startTime");
         }
     }
 
