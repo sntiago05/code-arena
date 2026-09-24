@@ -1,9 +1,6 @@
 package com.sntiago05.codearena.domain.challenge;
 
-import com.sntiago05.codearena.domain.exceptions.EmptyAttributeException;
-import com.sntiago05.codearena.domain.exceptions.InvalidTimeRangeException;
-import com.sntiago05.codearena.domain.exceptions.NullAttributeException;
-import com.sntiago05.codearena.domain.exceptions.NegativeAttributeException;
+import com.sntiago05.codearena.domain.utils.ValidationUtils;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -33,81 +30,50 @@ public class Challenge {
     }
 
     private void setId(UUID id) {
-        if (id == null) {
-            throw new NullAttributeException("id");
-        }
+        ValidationUtils.requireNonNull(id, "id");
         this.id = id;
     }
 
     private void setTitle(String title) {
-        if (title == null) {
-            throw new NullAttributeException("title");
-        }
-        if (title.trim().isEmpty()) {
-            throw new EmptyAttributeException("title");
-        }
+        ValidationUtils.requireNonEmpty(title, "title");
         this.title = title;
     }
 
     private void setDescription(String description) {
-        if (description == null) {
-            throw new NullAttributeException("description");
-        }
-        if (description.trim().isEmpty()) {
-            throw new EmptyAttributeException("description");
-        }
+        ValidationUtils.requireNonEmpty(description, "description");
         this.description = description;
     }
 
     private void setCategory(ChallengeCategory category) {
-        if (category == null) {
-            throw new NullAttributeException("category");
-        }
+        ValidationUtils.requireNonNull(category, "category");
         this.category = category;
     }
 
     private void setDifficulty(ChallengeDifuculty difficulty) {
-        if (difficulty == null) {
-            throw new NullAttributeException("difuculty");
-        }
+        ValidationUtils.requireNonNull(difficulty, "difuculty");
         this.difficulty = difficulty;
         setExperience(ChallengeExperienceCalculator.calculate(difficulty));
     }
 
     private void setCreatedAt(LocalDateTime createdAt) {
-        if (createdAt == null) {
-            throw new NullAttributeException("created at");
-        }
+        ValidationUtils.requireNonNull(createdAt, "created at");
         this.createdAt = createdAt;
-        if (this.deadLine != null && this.createdAt.isAfter(this.deadLine)) {
-            throw new InvalidTimeRangeException("created at cannot be after endTime");
-        }
+        ValidationUtils.validateTimeOrder(this.createdAt, this.deadLine, "created at cannot be after endTime");
     }
 
     private void setDeadLine(LocalDateTime deadLine) {
-        if (deadLine == null) {
-            throw new NullAttributeException("dead line");
-        }
+        ValidationUtils.requireNonNull(deadLine, "dead line");
         this.deadLine = deadLine;
-        if (this.createdAt != null && this.deadLine.isBefore(this.createdAt)) {
-            throw new InvalidTimeRangeException("deadline cannot be before startTime");
-        }
+        ValidationUtils.validateTimeOrder(this.createdAt, this.deadLine, "deadline cannot be before startTime");
     }
 
     private void setState(ChallengeState state) {
-        if (state == null) {
-            throw new NullAttributeException("state");
-        }
+        ValidationUtils.requireNonNull(state, "state");
         this.state = state;
     }
 
     private void setExperience(Integer experience) {
-        if (experience == null) {
-            throw new NullAttributeException("experience");
-        }
-        if (experience < 0) {
-            throw new NegativeAttributeException("experience");
-        }
+        ValidationUtils.requireNonNegative(experience, "experience");
         this.experience = experience;
     }
 }

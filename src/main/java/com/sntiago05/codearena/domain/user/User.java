@@ -1,8 +1,6 @@
 package com.sntiago05.codearena.domain.user;
 
-import com.sntiago05.codearena.domain.exceptions.EmptyAttributeException;
-import com.sntiago05.codearena.domain.exceptions.NegativeAttributeException;
-import com.sntiago05.codearena.domain.exceptions.NullAttributeException;
+import com.sntiago05.codearena.domain.utils.ValidationUtils;
 
 import java.util.UUID;
 
@@ -24,69 +22,43 @@ public class User {
         setPassword(password);
         setRole(role);
         setState(state);
-        this.accumulatedExperience =0;
+        this.accumulatedExperience = 0;
         addExperience(accumulatedExperience);
     }
 
     private void setId(UUID id) {
-        if (id == null) {
-            throw new NullAttributeException("Id");
-        }
+        ValidationUtils.requireNonNull(id, "Id");
         this.id = id;
     }
 
     private void setName(String name) {
-        if (name == null) {
-            throw new NullAttributeException("Name");
-        }
-        if (name.trim().isEmpty()) {
-            throw new EmptyAttributeException("Name");
-        }
+        ValidationUtils.requireNonEmpty(name, "Name");
         this.name = name;
     }
 
     private void setEmail(String email) {
-        if (email == null) {
-            throw new NullAttributeException("Email");
-        }
-        if (email.trim().isEmpty()) {
-            throw new EmptyAttributeException("Email");
-        }
+        ValidationUtils.requireNonEmpty(email, "Email");
         this.email = email;
     }
 
     private void setPassword(String password) {
-        if (password == null) {
-            throw new NullAttributeException("Password");
-        }
-        if (password.trim().isEmpty()) {
-            throw new EmptyAttributeException("Password");
-        }
+        ValidationUtils.requireNonEmpty(password, "Password");
         this.password = password;
     }
 
     private void setRole(UserRole role) {
-        if (role == null) {
-            throw new NullAttributeException("Role");
-        }
+        ValidationUtils.requireNonNull(role, "Role");
         this.role = role;
     }
 
     public void addExperience(Integer experienceToAdd) {
-        if (experienceToAdd == null) {
-            throw new NullAttributeException("Experience to add");
-        }
-        if (experienceToAdd < 0) {
-            throw new NegativeAttributeException("Experience to add");
-        }
+        ValidationUtils.requireNonNegative(experienceToAdd, "Experience to add");
         this.accumulatedExperience += experienceToAdd;
         this.level = CalculateLevel.calculate(this.accumulatedExperience);
     }
 
     private void setState(UserState state) {
-        if (state == null) {
-            throw new NullAttributeException("State");
-        }
+        ValidationUtils.requireNonNull(state, "State");
         this.state = state;
     }
 }
