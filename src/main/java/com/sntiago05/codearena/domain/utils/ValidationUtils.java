@@ -18,12 +18,6 @@ public class ValidationUtils {
         if (attribute.trim().isEmpty()) throw new EmptyAttributeException(name);
     }
 
-    public static void requireNonEmpty(String attribute, String name, boolean canBeNull) {
-        if (canBeNull && attribute == null) return;
-        if (!canBeNull) requireNonNull(attribute, name);
-        if (attribute.trim().isEmpty()) throw new EmptyAttributeException(name);
-    }
-
     public static void requireNonNegative(Integer attribute, String name) {
         requireNonNull(attribute, name);
         if (attribute < 0) throw new NegativeAttributeException(name);

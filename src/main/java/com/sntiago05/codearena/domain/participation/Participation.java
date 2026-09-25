@@ -1,35 +1,53 @@
 package com.sntiago05.codearena.domain.participation;
 
+import com.sntiago05.codearena.domain.challenge.Challenge;
 import com.sntiago05.codearena.domain.exceptions.InvalidParticipationStateException;
 import com.sntiago05.codearena.domain.utils.ValidationUtils;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
+@Getter
 public class Participation {
 
     private UUID id;
     private UUID userId;
-    private UUID challengeId;
+    private Challenge challenge;
     private LocalDateTime startedAt;
     private LocalDateTime submittedAt;
     private ParticipationState state;
     private String solution;
     private Integer exp;
 
-    private Participation(UUID id, UUID userId, UUID challengeId) {
-        ValidationUtils.requireNonNull(id, "id");
-        ValidationUtils.requireNonNull(userId, "userId");
-        ValidationUtils.requireNonNull(challengeId, "challengeId");
-
-        this.id = id;
-        this.userId = userId;
-        this.challengeId = challengeId;
-        this.state = ParticipationState.ACCEPTED;
+    private Participation(UUID id, UUID userId, Challenge challenge) {
+        setId(id);
+        setUserId(userId);
+        setChallenge(challenge);
+        setState(ParticipationState.ACCEPTED);
     }
 
-    public static Participation create(UUID id, UUID userId, UUID challengeId) {
-        return new Participation(id, userId, challengeId);
+    private void setId(UUID id) {
+        ValidationUtils.requireNonNull(id, "id");
+        this.id = id;
+    }
+
+    private void setUserId(UUID userId) {
+        ValidationUtils.requireNonNull(userId, "userId");
+        this.userId = userId;
+    }
+
+    private void setChallenge(Challenge challenge) {
+        ValidationUtils.requireNonNull(challenge, "challenge");
+        this.challenge = challenge;
+    }
+
+    private void setState(ParticipationState state) {
+        ValidationUtils.requireNonNull(state, "state");
+        this.state = state;
+    }
+
+    public static Participation create(UUID id, UUID userId, Challenge challenge) {
+        return new Participation(id, userId, challenge);
     }
 
     public Participation start() {

@@ -1,10 +1,11 @@
 package com.sntiago05.codearena.domain.challenge;
 
 import com.sntiago05.codearena.domain.utils.ValidationUtils;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
+@Getter
 public class Challenge {
     private UUID id;
     private String title;
