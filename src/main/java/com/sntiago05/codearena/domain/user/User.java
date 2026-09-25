@@ -1,9 +1,10 @@
 package com.sntiago05.codearena.domain.user;
 
 import com.sntiago05.codearena.domain.utils.ValidationUtils;
+import lombok.Getter;
 
 import java.util.UUID;
-
+@Getter
 public class User {
 
     private UUID id;
