@@ -16,3 +16,11 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+security:
+  jwt:
+    access:
+      secret: ${JWT_ACCESS_SECRET}
+      expiration: ${JWT_ACCESS_EXPIRATION}
+    refresh:
+      secret: ${JWT_REFRESH_SECRET}
+      expiration: ${JWT_REFRESH_EXPIRATION}
