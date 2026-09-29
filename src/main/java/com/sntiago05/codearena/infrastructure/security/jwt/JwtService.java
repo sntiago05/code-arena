@@ -1,8 +1,16 @@
 package com.sntiago05.codearena.infrastructure.security.jwt;
 
+import com.sntiago05.codearena.domain.user.User;
+import com.sntiago05.codearena.domain.user.UserRole;
 import com.sntiago05.codearena.infrastructure.security.config.JwtProperties;
 import com.sntiago05.codearena.infrastructure.security.config.TokenProperties;
+import com.sntiago05.codearena.infrastructure.security.jwt.claims.AccessTokenClaims;
+import com.sntiago05.codearena.infrastructure.security.jwt.claims.RefreshTokenClaims;
+import com.sntiago05.codearena.infrastructure.security.jwt.data.AccessTokenData;
+import com.sntiago05.codearena.infrastructure.security.jwt.data.RefreshTokenData;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +44,7 @@ public class JwtService {
         TokenProperties tokenProperties = jwtProperties.access();
         return buildBaseToken(data.userId(),
                 tokenProperties)
-                .claim("role", data.role())
+                .claim("role", data.role().name())
                 .signWith(
                         getSigningKey(
                                 tokenProperties))
@@ -51,6 +59,20 @@ public class JwtService {
                                 tokenProperties
                         ))
                 .compact();
+    }
+
+    private JwtParser buildJwtParser(TokenProperties tokenProperties) {
+        return Jwts.parser().verifyWith(getSigningKey(tokenProperties)).build();
+    }
+
+    public AccessTokenClaims parseAccessToken(String token) {
+        Claims claims = buildJwtParser(jwtProperties.access()).parseSignedClaims(token).getPayload();
+        return new AccessTokenClaims(UUID.fromString(claims.getSubject()), UserRole.valueOf(claims.get("role", String.class)));
+    }
+
+    public RefreshTokenClaims parseRefreshToken(String token) {
+        Claims claims = buildJwtParser(jwtProperties.refresh()).parseSignedClaims(token).getPayload();
+        return new RefreshTokenClaims(UUID.fromString(claims.getSubject()));
     }
 
 }

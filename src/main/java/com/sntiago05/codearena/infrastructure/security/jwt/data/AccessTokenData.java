@@ -1,4 +1,4 @@
-package com.sntiago05.codearena.infrastructure.security.jwt;
+package com.sntiago05.codearena.infrastructure.security.jwt.data;
 
 import com.sntiago05.codearena.domain.user.UserRole;
 import jakarta.validation.constraints.NotNull;
