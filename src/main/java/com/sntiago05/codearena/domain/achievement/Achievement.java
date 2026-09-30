@@ -1,8 +1,7 @@
 package com.sntiago05.codearena.domain.achievement;
 
 import com.sntiago05.codearena.domain.achievement.conditions.AchievementCondition;
-import com.sntiago05.codearena.domain.exceptions.EmptyAttributeException;
-import com.sntiago05.codearena.domain.exceptions.NullAttributeException;
+import com.sntiago05.codearena.domain.utils.ValidationUtils;
 import lombok.Getter;
 
 import java.util.UUID;
@@ -22,43 +21,27 @@ public class Achievement {
     }
 
     private void setId(UUID id) {
-        if (id == null)
-            throw new NullAttributeException("id");
-
+        ValidationUtils.requireNonNull(id, "id");
         this.id = id;
     }
 
     private void setTitle(String title) {
-        if (title == null)
-            throw new NullAttributeException("title");
-
-        if (title.trim().isEmpty())
-            throw new EmptyAttributeException("title");
-
+        ValidationUtils.requireNonEmpty(title, "title");
         this.title = title;
     }
 
     private void setDescription(String description) {
-        if (description == null)
-            throw new NullAttributeException("description");
-
-        if (description.trim().isEmpty())
-            throw new EmptyAttributeException("description");
-
+        ValidationUtils.requireNonEmpty(description, "description");
         this.description = description;
     }
 
     private void setCondition(AchievementCondition condition) {
-        if (condition == null)
-            throw new NullAttributeException("condition");
-
+        ValidationUtils.requireNonNull(condition, "condition");
         this.condition = condition;
     }
 
     public boolean isCompleted(AchievementContext achievementContext) {
-        if (achievementContext == null)
-            throw new NullAttributeException("achievementContext");
-
+        ValidationUtils.requireNonNull(achievementContext, "achievementContext");
         return condition.isSatisfiedBy(achievementContext);
     }
 }

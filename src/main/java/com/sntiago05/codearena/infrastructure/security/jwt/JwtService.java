@@ -1,13 +1,12 @@
 package com.sntiago05.codearena.infrastructure.security.jwt;
 
-import com.sntiago05.codearena.domain.user.User;
 import com.sntiago05.codearena.domain.user.UserRole;
 import com.sntiago05.codearena.infrastructure.security.config.JwtProperties;
 import com.sntiago05.codearena.infrastructure.security.config.TokenProperties;
 import com.sntiago05.codearena.infrastructure.security.jwt.claims.AccessTokenClaims;
 import com.sntiago05.codearena.infrastructure.security.jwt.claims.RefreshTokenClaims;
-import com.sntiago05.codearena.infrastructure.security.jwt.data.AccessTokenData;
-import com.sntiago05.codearena.infrastructure.security.jwt.data.RefreshTokenData;
+import com.sntiago05.codearena.application.ports.out.data.AccessTokenData;
+import com.sntiago05.codearena.application.ports.out.data.RefreshTokenData;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtParser;

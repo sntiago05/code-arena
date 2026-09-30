@@ -1,31 +1,26 @@
 package com.sntiago05.codearena.domain.utils;
 
-import com.sntiago05.codearena.domain.exceptions.EmptyAttributeException;
-import com.sntiago05.codearena.domain.exceptions.InvalidTimeRangeException;
-import com.sntiago05.codearena.domain.exceptions.NegativeAttributeException;
-import com.sntiago05.codearena.domain.exceptions.NullAttributeException;
-import com.sntiago05.codearena.domain.exceptions.InvalidAttributeTypeException;
-
+import com.sntiago05.codearena.domain.exceptions.InvalidAttributeException;
 import java.time.LocalDateTime;
 
 public class ValidationUtils {
 
     public static void requireNonNull(Object attribute, String name) {
-        if (attribute == null) throw new NullAttributeException(name);
+        if (attribute == null) throw new InvalidAttributeException(String.format("%s cannot be null.", name));
     }
 
     public static void requireNonEmpty(String attribute, String name) {
         requireNonNull(attribute, name);
-        if (attribute.trim().isEmpty()) throw new EmptyAttributeException(name);
+        if (attribute.trim().isEmpty()) throw new InvalidAttributeException(String.format("%s cannot be empty.", name));
     }
 
     public static void requireNonNegative(Integer attribute, String name) {
         requireNonNull(attribute, name);
-        if (attribute < 0) throw new NegativeAttributeException(name);
+        if (attribute < 0) throw new InvalidAttributeException(String.format("%s cannot be negative.", name));
     }
 
     public static void validateTimeOrder(LocalDateTime start, LocalDateTime end, String errorMessage) {
-        if (start != null && end != null && start.isAfter(end)) throw new InvalidTimeRangeException(errorMessage);
+        if (start != null && end != null && start.isAfter(end)) throw new InvalidAttributeException(errorMessage);
     }
 
     public static Integer requireInteger(Object attribute, String name) {
@@ -41,11 +36,10 @@ public class ValidationUtils {
                 try {
                     return Integer.parseInt(s);
                 } catch (NumberFormatException e) {
-                    throw new InvalidAttributeTypeException(name, "Integer", "String with value " + attribute);
+                    throw new InvalidAttributeException(String.format("Attribute '%s' must be of type Integer, but was String with value %s.", name, attribute));
                 }
             }
-            default -> throw new InvalidAttributeTypeException(name, "Integer", attribute.getClass().getSimpleName());
-
+            default -> throw new InvalidAttributeException(String.format("Attribute '%s' must be of type Integer, but was %s.", name, attribute.getClass().getSimpleName()));
         }
     }
 
@@ -58,9 +52,9 @@ public class ValidationUtils {
             try {
                 return Enum.valueOf(enumType, (String) attribute);
             } catch (IllegalArgumentException e) {
-                throw new InvalidAttributeTypeException(name, enumType.getSimpleName(), "String with value " + attribute);
+                throw new InvalidAttributeException(String.format("Attribute '%s' must be of type %s, but was String with value %s.", name, enumType.getSimpleName(), attribute));
             }
         }
-        throw new InvalidAttributeTypeException(name, enumType.getSimpleName(), attribute.getClass().getSimpleName());
+        throw new InvalidAttributeException(String.format("Attribute '%s' must be of type %s, but was %s.", name, enumType.getSimpleName(), attribute.getClass().getSimpleName()));
     }
 }
