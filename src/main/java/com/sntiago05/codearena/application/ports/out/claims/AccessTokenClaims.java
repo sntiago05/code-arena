@@ -1,4 +1,4 @@
-package com.sntiago05.codearena.infrastructure.security.jwt.claims;
+package com.sntiago05.codearena.application.ports.out.claims;
 
 import com.sntiago05.codearena.domain.user.UserRole;
 

@@ -1,7 +1,7 @@
 package com.sntiago05.codearena.infrastructure.security.filter;
 
 import com.sntiago05.codearena.infrastructure.security.jwt.JwtService;
-import com.sntiago05.codearena.infrastructure.security.jwt.claims.AccessTokenClaims;
+import com.sntiago05.codearena.application.ports.out.claims.AccessTokenClaims;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

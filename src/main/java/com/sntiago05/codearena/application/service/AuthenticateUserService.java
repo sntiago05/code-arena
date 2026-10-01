@@ -13,13 +13,11 @@ import com.sntiago05.codearena.application.ports.out.UserRepositoryPort;
 import com.sntiago05.codearena.application.ports.out.data.AccessTokenData;
 import com.sntiago05.codearena.application.ports.out.data.GeneratedRefreshToken;
 import com.sntiago05.codearena.application.ports.out.data.RefreshTokenData;
-import com.sntiago05.codearena.domain.refreshtoken.RefreshToken;
 import com.sntiago05.codearena.domain.user.User;
 import com.sntiago05.codearena.domain.user.UserState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -42,7 +40,9 @@ public class AuthenticateUserService implements AuthenticateUserUseCase {
         UUID userId = user.getId();
         GeneratedRefreshToken generatedRefreshToken = generateRefreshToken(userId);
         String accessToken = generateAccessToken(userId, user);
-        createRefreshToken(userId, generatedRefreshToken);
+        
+        refreshTokenRepository.save(generatedRefreshToken.toDomain(userId));
+        
         return new AuthenticationResult(
                 accessToken,
                 generatedRefreshToken.token()
@@ -65,10 +65,5 @@ public class AuthenticateUserService implements AuthenticateUserUseCase {
             throw new InvalidCredentialsException("Invalid password");
 
         return user;
-    }
-
-    private void createRefreshToken(UUID userId, GeneratedRefreshToken generatedRefreshToken) {
-        refreshTokenRepository.save(new RefreshToken(userId, generatedRefreshToken.token(),
-                LocalDateTime.now(), generatedRefreshToken.expiresAt()));
     }
 }
