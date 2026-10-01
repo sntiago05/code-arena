@@ -4,6 +4,7 @@ import com.sntiago05.codearena.domain.utils.ValidationUtils;
 import lombok.Getter;
 
 import java.util.UUID;
+
 @Getter
 public class User {
 
@@ -17,7 +18,12 @@ public class User {
     private UserState state;
 
     public User(UUID id, String name, String email, String password, UserRole role, UserState state, Integer accumulatedExperience) {
+        this(name, email, password, role, state, accumulatedExperience);
         setId(id);
+    }
+
+    public User(String name, String email, String password, UserRole role, UserState state, Integer accumulatedExperience) {
+        setId(UUID.randomUUID());
         setName(name);
         setEmail(email);
         setPassword(password);
@@ -25,6 +31,10 @@ public class User {
         setState(state);
         this.accumulatedExperience = 0;
         addExperience(accumulatedExperience);
+    }
+
+    public static User createPlayer(String name, String email, String encodedPassword) {
+        return new User(name, email, encodedPassword, UserRole.PLAYER, UserState.ACTIVE, 0);
     }
 
     private void setId(UUID id) {
