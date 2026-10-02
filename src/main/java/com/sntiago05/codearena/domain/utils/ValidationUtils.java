@@ -3,6 +3,9 @@ package com.sntiago05.codearena.domain.utils;
 import com.sntiago05.codearena.domain.exceptions.InvalidAttributeException;
 import java.time.LocalDateTime;
 
+/**
+ * Domain-specific utility methods for attribute validation.
+ */
 public class ValidationUtils {
 
     public static void requireNonNull(Object attribute, String name) {

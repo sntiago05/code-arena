@@ -4,6 +4,9 @@ import com.sntiago05.codearena.domain.utils.ValidationUtils;
 
 import java.util.UUID;
 
+/**
+ * Represents a category for organizing challenges.
+ */
 public class ChallengeCategory {
 
     private UUID id;

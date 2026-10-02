@@ -25,6 +25,9 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * Service for generating and parsing JWT tokens.
+ */
 @Service
 @RequiredArgsConstructor
 public class JwtService implements TokenParserPort, TokenGeneratorPort {

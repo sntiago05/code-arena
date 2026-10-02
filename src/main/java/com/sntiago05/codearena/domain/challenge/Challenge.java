@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+/**
+ * Represents a coding challenge.
+ */
 @Getter
 public class Challenge {
     private UUID id;

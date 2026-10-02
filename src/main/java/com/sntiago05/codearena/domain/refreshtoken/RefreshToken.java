@@ -6,6 +6,9 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Authentication refresh token for extending user sessions.
+ */
 @Getter
 public class RefreshToken {
 
@@ -79,6 +82,10 @@ public class RefreshToken {
         this.revokedAt = revokedAt;
     }
 
+    /**
+     * @param revokeTime Time of revocation
+     * @throws IllegalStateException if token is already revoked
+     */
     public void revoke(LocalDateTime revokeTime) {
         ValidationUtils.requireNonNull(revokeTime, "RevokeTime");
         if (this.revokedAt != null) {

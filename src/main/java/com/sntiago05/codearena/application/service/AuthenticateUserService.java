@@ -20,6 +20,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+/**
+ * Service for authenticating users and issuing access tokens.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthenticateUserService implements AuthenticateUserUseCase {

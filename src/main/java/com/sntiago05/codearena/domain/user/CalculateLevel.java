@@ -1,5 +1,8 @@
 package com.sntiago05.codearena.domain.user;
 
+/**
+ * Logic for calculating a user's level based on experience.
+ */
 public class CalculateLevel {
 
     private CalculateLevel() {

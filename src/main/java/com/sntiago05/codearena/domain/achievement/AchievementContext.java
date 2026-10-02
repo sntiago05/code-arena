@@ -8,6 +8,9 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ * Contextual data required to evaluate user achievements.
+ */
 public class AchievementContext {
     @Getter
     private User user;

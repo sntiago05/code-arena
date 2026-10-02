@@ -7,6 +7,7 @@ import lombok.Getter;
 import java.util.UUID;
 
 @Getter
+/** Represents an achievement that a user can earn by satisfying specific conditions. */
 public class Achievement {
     private UUID id;
     private String title;

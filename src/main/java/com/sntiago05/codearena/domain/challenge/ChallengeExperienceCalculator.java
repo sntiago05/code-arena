@@ -1,5 +1,8 @@
 package com.sntiago05.codearena.domain.challenge;
 
+/**
+ * Utility for calculating experience points based on challenge difficulty.
+ */
 public class ChallengeExperienceCalculator {
     
     private ChallengeExperienceCalculator() {

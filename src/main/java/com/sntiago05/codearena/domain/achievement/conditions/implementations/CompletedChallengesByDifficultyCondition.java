@@ -8,6 +8,9 @@ import com.sntiago05.codearena.domain.utils.ValidationUtils;
 
 import java.util.UUID;
 
+/**
+ * Achievement condition satisfied when a user completes challenges of a specific difficulty.
+ */
 public class CompletedChallengesByDifficultyCondition implements AchievementCondition {
 
     private ChallengeDifuculty value;

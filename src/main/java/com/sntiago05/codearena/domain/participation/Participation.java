@@ -8,6 +8,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 @Getter
+/** Represents a user's participation attempt in a challenge. */
 public class Participation {
 
     private UUID id;

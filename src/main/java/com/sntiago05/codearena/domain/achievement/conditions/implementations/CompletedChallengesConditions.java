@@ -7,6 +7,7 @@ import com.sntiago05.codearena.domain.utils.ValidationUtils;
 
 import java.util.UUID;
 
+/** Condition based on a required number of completed challenges. */
 public class CompletedChallengesConditions implements AchievementCondition {
     private Integer value;
 

@@ -7,6 +7,9 @@ import com.sntiago05.codearena.domain.user.User;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Port defining operations for user persistence.
+ */
 public interface UserRepositoryPort {
     Optional<User> findByEmail(String email);
     Optional<User> findById(UUID id);

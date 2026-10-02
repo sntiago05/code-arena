@@ -20,6 +20,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+/**
+ * Service for handling refresh token operations including validation and generation.
+ */
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenService implements RefreshTokenUseCase {

@@ -4,6 +4,7 @@ import com.sntiago05.codearena.domain.achievement.AchievementContext;
 import com.sntiago05.codearena.domain.achievement.conditions.AchievementCondition;
 import com.sntiago05.codearena.domain.utils.ValidationUtils;
 
+/** Condition based on a required amount of accumulated experience. */
 public class ExperienceCondition implements AchievementCondition {
     private Integer value;
 

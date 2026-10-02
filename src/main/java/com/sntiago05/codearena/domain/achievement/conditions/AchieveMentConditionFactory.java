@@ -7,6 +7,7 @@ import com.sntiago05.codearena.domain.achievement.conditions.implementations.Exp
 import com.sntiago05.codearena.domain.challenge.ChallengeDifuculty;
 import com.sntiago05.codearena.domain.utils.ValidationUtils;
 
+/** Factory for creating achievement conditions. */
 public class AchieveMentConditionFactory {
     private AchieveMentConditionFactory() {
     }

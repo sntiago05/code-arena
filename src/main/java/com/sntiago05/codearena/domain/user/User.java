@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.util.UUID;
 
+/**
+ * Represents a user within the code arena domain.
+ */
 @Getter
 public class User {
 

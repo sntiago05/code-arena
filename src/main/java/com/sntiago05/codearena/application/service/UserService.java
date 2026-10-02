@@ -20,6 +20,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+/**
+ * Coordinates main user operations.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserService implements RegisterUserUseCase, GetMyProfileUseCase, GetUsersUseCase {
@@ -28,12 +31,22 @@ public class UserService implements RegisterUserUseCase, GetMyProfileUseCase, Ge
     private final PasswordHasherPort passwordHasherPort;
     private final ParticipationRepositoryPort participationRepositoryPort;
 
+    /**
+     * @param command user registration data
+     * @return registered user information
+     * @throws EmailAlreadyExistsException if the email is already in use
+     */
     @Override
     public RegisterUserResult registerUser(RegisterUserCommand command) {
         validateEmailNotTaken(command.email());
         return mapToResult(userRepositoryPort.save(buildUserToRegister(command)));
     }
 
+    /**
+     * @param command contains the user identifier
+     * @return user profile data and participation statistics
+     * @throws ResourceNotFoundException if the user does not exist
+     */
     @Override
     public GetMyProfileResult getMyProfile(GetMyProfileCommand command) {
         User user = findUserByIdOrThrow(command.userId());
