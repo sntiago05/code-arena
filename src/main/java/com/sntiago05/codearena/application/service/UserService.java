@@ -3,10 +3,13 @@ package com.sntiago05.codearena.application.service;
 import com.sntiago05.codearena.application.exceptions.EmailAlreadyExistsException;
 import com.sntiago05.codearena.application.exceptions.ResourceNotFoundException;
 import com.sntiago05.codearena.application.ports.in.GetMyProfileUseCase;
+import com.sntiago05.codearena.application.ports.in.GetUsersUseCase;
 import com.sntiago05.codearena.application.ports.in.RegisterUserUseCase;
 import com.sntiago05.codearena.application.ports.in.command.GetMyProfileCommand;
 import com.sntiago05.codearena.application.ports.in.command.RegisterUserCommand;
+import com.sntiago05.codearena.application.ports.in.command.getusers.GetUsersCommand;
 import com.sntiago05.codearena.application.ports.in.result.GetMyProfileResult;
+import com.sntiago05.codearena.application.ports.in.result.GetUsersResult;
 import com.sntiago05.codearena.application.ports.in.result.RegisterUserResult;
 import com.sntiago05.codearena.application.ports.out.ParticipationRepositoryPort;
 import com.sntiago05.codearena.application.ports.out.PasswordHasherPort;
@@ -19,7 +22,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements RegisterUserUseCase, GetMyProfileUseCase {
+public class UserService implements RegisterUserUseCase, GetMyProfileUseCase, GetUsersUseCase {
 
     private final UserRepositoryPort userRepositoryPort;
     private final PasswordHasherPort passwordHasherPort;
@@ -37,6 +40,11 @@ public class UserService implements RegisterUserUseCase, GetMyProfileUseCase {
         long completedParticipations = countCompletedParticipations(command.userId());
         long acceptedParticipations = countAcceptedParticipations(command.userId());
         return mapToProfileResult(user, completedParticipations, acceptedParticipations);
+    }
+
+    @Override
+    public GetUsersResult getUsers(GetUsersCommand command) {
+        return null;
     }
 
     private void validateEmailNotTaken(String email) {
