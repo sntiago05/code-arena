@@ -4,7 +4,7 @@ import com.sntiago05.codearena.domain.achievement.AchievementsConditionsCatalog;
 import com.sntiago05.codearena.domain.achievement.conditions.implementations.CompletedChallengesByDifficultyCondition;
 import com.sntiago05.codearena.domain.achievement.conditions.implementations.CompletedChallengesConditions;
 import com.sntiago05.codearena.domain.achievement.conditions.implementations.ExperienceCondition;
-import com.sntiago05.codearena.domain.challenge.ChallengeDifuculty;
+import com.sntiago05.codearena.domain.challenge.ChallengeDifficulty;
 import com.sntiago05.codearena.domain.utils.ValidationUtils;
 
 /** Factory for creating achievement conditions. */
@@ -23,7 +23,7 @@ public class AchieveMentConditionFactory {
                 return new ExperienceCondition(expValue);
             }
             case COMPLETED_DIFFICULTY -> {
-                ChallengeDifuculty difficulty = ValidationUtils.requireEnumType(value, ChallengeDifuculty.class, "value");
+                ChallengeDifficulty difficulty = ValidationUtils.requireEnumType(value, ChallengeDifficulty.class, "value");
                 return new CompletedChallengesByDifficultyCondition(difficulty);
             }
             default -> throw new IllegalArgumentException("Unknown condition type: " + type);

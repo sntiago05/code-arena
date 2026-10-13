@@ -9,7 +9,7 @@ public class ChallengeExperienceCalculator {
 
     }
 
-    public static int calculate(ChallengeDifuculty difuculty) {
+    public static int calculate(ChallengeDifficulty difuculty) {
         if (difuculty == null) {
             return 0;
         }

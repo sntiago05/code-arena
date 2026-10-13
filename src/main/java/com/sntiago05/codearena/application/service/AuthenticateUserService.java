@@ -3,7 +3,7 @@ package com.sntiago05.codearena.application.service;
 import com.sntiago05.codearena.application.exceptions.InvalidCredentialsException;
 import com.sntiago05.codearena.application.exceptions.ResourceNotFoundException;
 import com.sntiago05.codearena.application.exceptions.UserInactiveException;
-import com.sntiago05.codearena.application.ports.in.AuthenticateUserUseCase;
+import com.sntiago05.codearena.application.ports.in.users.AuthenticateUserUseCase;
 import com.sntiago05.codearena.application.ports.in.command.AuthenticateUserCommand;
 import com.sntiago05.codearena.application.ports.in.result.AuthenticationResult;
 import com.sntiago05.codearena.application.ports.out.PasswordHasherPort;

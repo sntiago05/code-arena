@@ -1,4 +1,4 @@
-package com.sntiago05.codearena.application.ports.in;
+package com.sntiago05.codearena.application.ports.in.users;
 
 import com.sntiago05.codearena.application.ports.in.command.GetMyProfileCommand;
 import com.sntiago05.codearena.application.ports.in.result.GetMyProfileResult;

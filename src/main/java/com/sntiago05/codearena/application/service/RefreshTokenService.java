@@ -2,7 +2,7 @@ package com.sntiago05.codearena.application.service;
 
 import com.sntiago05.codearena.application.exceptions.InvalidTokenException;
 import com.sntiago05.codearena.application.exceptions.ResourceNotFoundException;
-import com.sntiago05.codearena.application.ports.in.RefreshTokenUseCase;
+import com.sntiago05.codearena.application.ports.in.users.RefreshTokenUseCase;
 import com.sntiago05.codearena.application.ports.in.command.RefreshTokenCommand;
 import com.sntiago05.codearena.application.ports.in.result.AuthenticationResult;
 import com.sntiago05.codearena.application.ports.out.RefreshTokenRepositoryPort;

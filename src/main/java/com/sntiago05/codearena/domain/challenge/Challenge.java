@@ -14,14 +14,14 @@ public class Challenge {
     private String title;
     private String description;
     private ChallengeCategory category;
-    private ChallengeDifuculty difficulty;
+    private ChallengeDifficulty difficulty;
     private LocalDateTime createdAt;
     private LocalDateTime deadLine;
     private ChallengeState state;
     private Integer experience;
 
-    public Challenge(UUID id, String title, String description, ChallengeCategory category, 
-                     ChallengeDifuculty difuculty, LocalDateTime startTime, LocalDateTime endTime, 
+    public Challenge(UUID id, String title, String description, ChallengeCategory category,
+                     ChallengeDifficulty difuculty, LocalDateTime startTime, LocalDateTime endTime,
                      ChallengeState state) {
         setId(id);
         setTitle(title);
@@ -53,7 +53,7 @@ public class Challenge {
         this.category = category;
     }
 
-    private void setDifficulty(ChallengeDifuculty difficulty) {
+    private void setDifficulty(ChallengeDifficulty difficulty) {
         ValidationUtils.requireNonNull(difficulty, "difuculty");
         this.difficulty = difficulty;
         setExperience(ChallengeExperienceCalculator.calculate(difficulty));

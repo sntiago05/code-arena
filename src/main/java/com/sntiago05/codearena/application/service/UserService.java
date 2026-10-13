@@ -2,9 +2,9 @@ package com.sntiago05.codearena.application.service;
 
 import com.sntiago05.codearena.application.exceptions.EmailAlreadyExistsException;
 import com.sntiago05.codearena.application.exceptions.ResourceNotFoundException;
-import com.sntiago05.codearena.application.ports.in.GetMyProfileUseCase;
-import com.sntiago05.codearena.application.ports.in.GetUsersUseCase;
-import com.sntiago05.codearena.application.ports.in.RegisterUserUseCase;
+import com.sntiago05.codearena.application.ports.in.users.GetMyProfileUseCase;
+import com.sntiago05.codearena.application.ports.in.users.GetUsersUseCase;
+import com.sntiago05.codearena.application.ports.in.users.RegisterUserUseCase;
 import com.sntiago05.codearena.application.ports.in.command.GetMyProfileCommand;
 import com.sntiago05.codearena.application.ports.in.command.RegisterUserCommand;
 import com.sntiago05.codearena.application.ports.in.command.getusers.GetUsersCommand;
