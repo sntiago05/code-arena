@@ -14,6 +14,11 @@ import com.sntiago05.codearena.application.ports.in.result.RegisterUserResult;
 import com.sntiago05.codearena.application.ports.out.ParticipationRepositoryPort;
 import com.sntiago05.codearena.application.ports.out.PasswordHasherPort;
 import com.sntiago05.codearena.application.ports.out.UserRepositoryPort;
+import com.sntiago05.codearena.application.ports.out.data.UserPage;
+import com.sntiago05.codearena.application.ports.out.data.UserQuery;
+import com.sntiago05.codearena.application.service.mapper.userservicemapper.GetMyProfileMapper;
+import com.sntiago05.codearena.application.service.mapper.userservicemapper.GetUsersMapper;
+import com.sntiago05.codearena.application.service.mapper.userservicemapper.RegisterUserMapper;
 import com.sntiago05.codearena.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,7 +44,9 @@ public class UserService implements RegisterUserUseCase, GetMyProfileUseCase, Ge
     @Override
     public RegisterUserResult registerUser(RegisterUserCommand command) {
         validateEmailNotTaken(command.email());
-        return mapToResult(userRepositoryPort.save(buildUserToRegister(command)));
+        String encodedPassword = passwordHasherPort.encode(command.password());
+        User userToRegister = RegisterUserMapper.toUser(command, encodedPassword);
+        return RegisterUserMapper.toRegisterUserResult(userRepositoryPort.save(userToRegister));
     }
 
     /**
@@ -52,34 +59,20 @@ public class UserService implements RegisterUserUseCase, GetMyProfileUseCase, Ge
         User user = findUserByIdOrThrow(command.userId());
         long completedParticipations = countCompletedParticipations(command.userId());
         long acceptedParticipations = countAcceptedParticipations(command.userId());
-        return mapToProfileResult(user, completedParticipations, acceptedParticipations);
+        return GetMyProfileMapper.toGetMyProfileResult(user, completedParticipations, acceptedParticipations);
     }
 
     @Override
     public GetUsersResult getUsers(GetUsersCommand command) {
-        return null;
+        UserQuery query = GetUsersMapper.toUserQuery(command);
+        UserPage userPage = userRepositoryPort.findPage(query);
+        return GetUsersMapper.toGetUsersResult(userPage);
     }
 
     private void validateEmailNotTaken(String email) {
         if (userRepositoryPort.existsByEmail(email)) {
             throw new EmailAlreadyExistsException("Email already exists");
         }
-    }
-
-    private User buildUserToRegister(RegisterUserCommand command) {
-        return User.createPlayer(
-                command.name(),
-                command.email(),
-                passwordHasherPort.encode(command.password())
-        );
-    }
-
-    private RegisterUserResult mapToResult(User registered) {
-        return new RegisterUserResult(
-                registered.getName(),
-                registered.getEmail(),
-                registered.getAccumulatedExperience()
-        );
     }
 
     private User findUserByIdOrThrow(UUID userId) {
@@ -93,16 +86,5 @@ public class UserService implements RegisterUserUseCase, GetMyProfileUseCase, Ge
 
     private long countAcceptedParticipations(UUID userId) {
         return participationRepositoryPort.countAcceptedByUser(userId);
-    }
-
-    private GetMyProfileResult mapToProfileResult(User user, long completedParticipations, long acceptedParticipations) {
-        return new GetMyProfileResult(
-                user.getName(),
-                user.getEmail(),
-                user.getAccumulatedExperience(),
-                user.getLevel(),
-                completedParticipations,
-                acceptedParticipations
-        );
     }
 }

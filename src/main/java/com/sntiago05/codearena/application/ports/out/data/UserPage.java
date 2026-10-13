@@ -9,6 +9,11 @@ import java.util.List;
  */
 public record UserPage(
         List<User> users,
-        long totalElements
+        int page,
+        int size,
+        long totalElements,
+        int totalPages,
+        boolean hasNext,
+        boolean hasPrevious
 ) {
 }

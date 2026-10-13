@@ -15,5 +15,5 @@ public interface UserRepositoryPort {
     Optional<User> findById(UUID id);
     User save(User user);
     boolean existsByEmail(String email);
-    UserPage findPages(UserQuery query);
+    UserPage findPage(UserQuery query);
 }
