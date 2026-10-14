@@ -9,8 +9,9 @@ import com.sntiago05.codearena.application.ports.in.command.GetMyProfileCommand;
 import com.sntiago05.codearena.application.ports.in.command.RegisterUserCommand;
 import com.sntiago05.codearena.application.ports.in.command.getusers.GetUsersCommand;
 import com.sntiago05.codearena.application.ports.in.result.GetMyProfileResult;
-import com.sntiago05.codearena.application.ports.in.result.GetUsersResult;
+import com.sntiago05.codearena.application.ports.in.result.PageResult;
 import com.sntiago05.codearena.application.ports.in.result.RegisterUserResult;
+import com.sntiago05.codearena.application.ports.in.result.UserSummaryResult;
 import com.sntiago05.codearena.application.ports.out.ParticipationRepositoryPort;
 import com.sntiago05.codearena.application.ports.out.PasswordHasherPort;
 import com.sntiago05.codearena.application.ports.out.UserRepositoryPort;
@@ -64,10 +65,10 @@ public class UserService implements RegisterUserUseCase, GetMyProfileUseCase, Ge
     }
 
     @Override
-    public GetUsersResult getUsers(GetUsersCommand command) {
+    public PageResult<UserSummaryResult> getUsers(GetUsersCommand command) {
         UserQuery query = GetUsersMapper.toUserQuery(command);
         PageData<UserSummaryData> userPage = userRepositoryPort.findPage(query);
-        return GetUsersMapper.toGetUsersResult(userPage);
+        return GetUsersMapper.toPageResult(userPage);
     }
 
     private void validateEmailNotTaken(String email) {

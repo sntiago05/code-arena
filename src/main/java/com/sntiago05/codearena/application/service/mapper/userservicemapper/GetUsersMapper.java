@@ -4,7 +4,7 @@ import com.sntiago05.codearena.application.exceptions.InvalidCommandException;
 import com.sntiago05.codearena.application.ports.in.command.getusers.GetUsersCommand;
 import com.sntiago05.codearena.application.ports.in.command.getusers.UserSortField;
 import com.sntiago05.codearena.application.ports.in.command.getusers.UserSortOrder;
-import com.sntiago05.codearena.application.ports.in.result.GetUsersResult;
+import com.sntiago05.codearena.application.ports.in.result.PageResult;
 import com.sntiago05.codearena.application.ports.in.result.PaginationResult;
 import com.sntiago05.codearena.application.ports.in.result.UserSummaryResult;
 import com.sntiago05.codearena.application.ports.out.data.PageData;
@@ -48,18 +48,19 @@ public final class GetUsersMapper {
     }
 
     /**
-     * Converts a paginated list of {@link UserSummaryData} into a {@link GetUsersResult}.
+     * Converts a paginated list of {@link UserSummaryData} into a
+     * {@link PageResult}{@code <}{@link UserSummaryResult}{@code >}.
      *
      * @param userPage page containing user summary data and pagination metadata
      * @return the result containing user summaries and pagination
      */
-    public static GetUsersResult toGetUsersResult(PageData<UserSummaryData> userPage) {
+    public static PageResult<UserSummaryResult> toPageResult(PageData<UserSummaryData> userPage) {
         Objects.requireNonNull(userPage, "userPage cannot be null");
 
         PageData<UserSummaryResult> resultPage = userPage.map(GetUsersMapper::toUserSummaryResult);
         PaginationResult pagination = toPaginationResult(resultPage.pagination());
 
-        return new GetUsersResult(pagination, resultPage.content());
+        return new PageResult<>(pagination, resultPage.content());
     }
 
     private static UserSummaryResult toUserSummaryResult(UserSummaryData user) {

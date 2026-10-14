@@ -1,11 +1,12 @@
 package com.sntiago05.codearena.application.ports.in.users;
 
 import com.sntiago05.codearena.application.ports.in.command.getusers.GetUsersCommand;
-import com.sntiago05.codearena.application.ports.in.result.GetUsersResult;
+import com.sntiago05.codearena.application.ports.in.result.PageResult;
+import com.sntiago05.codearena.application.ports.in.result.UserSummaryResult;
 
 /**
- * Use case for retrieving a list of users.
+ * Use case for retrieving a paginated list of users.
  */
 public interface GetUsersUseCase {
-    GetUsersResult getUsers(GetUsersCommand command);
+    PageResult<UserSummaryResult> getUsers(GetUsersCommand command);
 }
