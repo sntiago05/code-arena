@@ -1,12 +1,14 @@
 package com.sntiago05.codearena.application.ports.in.command;
 
 import com.sntiago05.codearena.application.ports.in.command.getusers.GetUsersCommand;
+import com.sntiago05.codearena.domain.challenge.ChallengeDifficulty;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -83,5 +85,68 @@ class CommandValidationTest {
 
         var nullValues = new GetUsersCommand(null, null, null, null);
         assertFalse(validator.validate(nullValues).isEmpty());
+    }
+
+    @Test
+    void createChallengeCommandValidation() {
+        var validWithDates = new CreateChallengeCommand(
+                "Binary Search",
+                "Implement binary search",
+                UUID.randomUUID(),
+                ChallengeDifficulty.MEDIUM,
+                LocalDateTime.now().plusDays(1),
+                LocalDateTime.now().plusDays(2)
+        );
+        assertTrue(validator.validate(validWithDates).isEmpty());
+
+        var validNullDates = new CreateChallengeCommand(
+                "Binary Search",
+                "Implement binary search",
+                UUID.randomUUID(),
+                ChallengeDifficulty.EASY,
+                null,
+                null
+        );
+        assertTrue(validator.validate(validNullDates).isEmpty());
+
+        var blankTitle = new CreateChallengeCommand(
+                "  ",
+                "Implement binary search",
+                UUID.randomUUID(),
+                ChallengeDifficulty.EASY,
+                null,
+                null
+        );
+        assertFalse(validator.validate(blankTitle).isEmpty());
+
+        var blankDesc = new CreateChallengeCommand(
+                "Binary Search",
+                "   ",
+                UUID.randomUUID(),
+                ChallengeDifficulty.EASY,
+                null,
+                null
+        );
+        assertFalse(validator.validate(blankDesc).isEmpty());
+
+        var nullCategory = new CreateChallengeCommand(
+                "Binary Search",
+                "Implement binary search",
+                null,
+                ChallengeDifficulty.EASY,
+                null,
+                null
+        );
+        assertFalse(validator.validate(nullCategory).isEmpty());
+
+        var nullDifficulty = new CreateChallengeCommand(
+                "Binary Search",
+                "Implement binary search",
+                UUID.randomUUID(),
+                null,
+                null,
+                null
+        );
+        assertFalse(validator.validate(nullDifficulty).isEmpty());
     }
 }
