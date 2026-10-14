@@ -1,6 +1,7 @@
 package com.sntiago05.codearena.application.service.mapper.userservicemapper;
 
 import com.sntiago05.codearena.application.exceptions.InvalidCommandException;
+import com.sntiago05.codearena.application.ports.in.command.PaginationCommand;
 import com.sntiago05.codearena.application.ports.in.command.getusers.GetUsersCommand;
 import com.sntiago05.codearena.application.ports.in.command.getusers.UserSortField;
 import com.sntiago05.codearena.application.ports.in.command.getusers.UserSortOrder;
@@ -47,8 +48,27 @@ class GetUsersMapperTest {
     }
 
     @Test
+    void shouldMapToUserQueryWithPaginationCommandDirectly() {
+        var pagination = new PaginationCommand(3, 30);
+        var command = new GetUsersCommand(pagination, UserSortField.EMAIL, UserSortOrder.DESCENDING);
+
+        UserQuery query = GetUsersMapper.toUserQuery(command);
+
+        assertNotNull(query);
+        assertEquals(3, query.page());
+        assertEquals(30, query.size());
+        assertEquals(com.sntiago05.codearena.application.ports.out.data.UserSortField.EMAIL, query.sortField());
+        assertEquals(com.sntiago05.codearena.application.ports.out.data.UserSortOrder.DESCENDING, query.sortOrder());
+    }
+
+    @Test
     void shouldValidateCommandNotNull() {
         assertThrows(InvalidCommandException.class, () -> GetUsersMapper.toUserQuery(null));
+    }
+
+    @Test
+    void shouldValidatePaginationNotNull() {
+        assertThrows(InvalidCommandException.class, () -> GetUsersMapper.toUserQuery(new GetUsersCommand((PaginationCommand) null, null, null)));
     }
 
     @Test

@@ -91,15 +91,11 @@ public final class GetUsersMapper {
             throw new InvalidCommandException("Command cannot be null");
         }
 
-        Integer page = command.page();
-        Integer size = command.size();
+        if (command.pagination() == null) {
+            throw new InvalidCommandException("Pagination cannot be null");
+        }
 
-        if (page == null || page < 0) {
-            throw new InvalidCommandException("Page index must not be null and must be greater than or equal to zero");
-        }
-        if (size == null || size < 1) {
-            throw new InvalidCommandException("Page size must not be null and must be greater than zero");
-        }
+        command.pagination().validate();
     }
 
     private static com.sntiago05.codearena.application.ports.out.data.UserSortField mapSortField(UserSortField sortField) {

@@ -1,5 +1,6 @@
 package com.sntiago05.codearena.application.ports.in.command;
 
+import com.sntiago05.codearena.application.ports.in.command.challenges.GetChallengeByIdCommand;
 import com.sntiago05.codearena.application.ports.in.command.getusers.GetUsersCommand;
 import com.sntiago05.codearena.domain.challenge.ChallengeDifficulty;
 import jakarta.validation.Validation;
@@ -73,9 +74,33 @@ class CommandValidationTest {
     }
 
     @Test
+    void paginationCommandValidation() {
+        var valid = new PaginationCommand(0, 10);
+        assertTrue(validator.validate(valid).isEmpty());
+
+        var negativePage = new PaginationCommand(-1, 10);
+        assertFalse(validator.validate(negativePage).isEmpty());
+
+        var zeroSize = new PaginationCommand(0, 0);
+        assertFalse(validator.validate(zeroSize).isEmpty());
+
+        var negativeSize = new PaginationCommand(0, -5);
+        assertFalse(validator.validate(negativeSize).isEmpty());
+
+        var nullPage = new PaginationCommand(null, 10);
+        assertFalse(validator.validate(nullPage).isEmpty());
+
+        var nullSize = new PaginationCommand(0, null);
+        assertFalse(validator.validate(nullSize).isEmpty());
+    }
+
+    @Test
     void getUsersCommandValidation() {
         var valid = new GetUsersCommand(0, 10, null, null);
         assertTrue(validator.validate(valid).isEmpty());
+
+        var validWithPagination = new GetUsersCommand(new PaginationCommand(0, 10), null, null);
+        assertTrue(validator.validate(validWithPagination).isEmpty());
 
         var negativePage = new GetUsersCommand(-1, 10, null, null);
         assertFalse(validator.validate(negativePage).isEmpty());
@@ -85,6 +110,18 @@ class CommandValidationTest {
 
         var nullValues = new GetUsersCommand(null, null, null, null);
         assertFalse(validator.validate(nullValues).isEmpty());
+
+        var nullPagination = new GetUsersCommand((PaginationCommand) null, null, null);
+        assertFalse(validator.validate(nullPagination).isEmpty());
+    }
+
+    @Test
+    void getChallengeByIdCommandValidation() {
+        var valid = new GetChallengeByIdCommand(UUID.randomUUID());
+        assertTrue(validator.validate(valid).isEmpty());
+
+        var nullId = new GetChallengeByIdCommand(null);
+        assertFalse(validator.validate(nullId).isEmpty());
     }
 
     @Test
