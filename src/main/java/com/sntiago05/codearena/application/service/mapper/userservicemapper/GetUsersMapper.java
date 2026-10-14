@@ -7,14 +7,15 @@ import com.sntiago05.codearena.application.ports.in.command.getusers.UserSortOrd
 import com.sntiago05.codearena.application.ports.in.result.GetUsersResult;
 import com.sntiago05.codearena.application.ports.in.result.PaginationResult;
 import com.sntiago05.codearena.application.ports.in.result.UserSummaryResult;
-import com.sntiago05.codearena.application.ports.out.data.UserPage;
+import com.sntiago05.codearena.application.ports.out.data.PaginationMeta;
+import com.sntiago05.codearena.application.ports.out.data.PageData;
 import com.sntiago05.codearena.application.ports.out.data.UserQuery;
-
-import java.util.List;
+import com.sntiago05.codearena.application.ports.out.data.UserSummaryData;
 
 public final class GetUsersMapper {
 
-    private GetUsersMapper() {}
+    private GetUsersMapper() {
+    }
 
     public static UserQuery toUserQuery(GetUsersCommand command) {
         validateGetUsersCommand(command);
@@ -30,33 +31,31 @@ public final class GetUsersMapper {
         );
     }
 
-    public static GetUsersResult toGetUsersResult(UserPage userPage) {
-        PaginationResult pagination = getPagination(userPage);
+    public static GetUsersResult toGetUsersResult(PageData<UserSummaryData> userPage) {
+        PaginationResult pagination = getPagination(userPage.pagination());
 
-        List<UserSummaryResult> users = userPage.users().stream()
-                .map(user -> new UserSummaryResult(
-                        user.getName(),
-                        user.getEmail(),
-                        user.getRole(),
-                        user.getState()
-                ))
-                .toList();
+        PageData<UserSummaryResult> resultPage = userPage.map(user -> new UserSummaryResult(
+                user.name(),
+                user.email(),
+                user.role(),
+                user.state()
+        ));
 
-        return new GetUsersResult(pagination, users);
+        return new GetUsersResult(pagination, resultPage.content());
     }
 
-    public static GetUsersResult toResult(UserPage userPage) {
+    public static GetUsersResult toResult(PageData<UserSummaryData> userPage) {
         return toGetUsersResult(userPage);
     }
 
-    private static PaginationResult getPagination(UserPage userPage) {
+    private static PaginationResult getPagination(PaginationMeta pagination) {
         return new PaginationResult(
-                userPage.page(),
-                userPage.size(),
-                userPage.totalElements(),
-                userPage.totalPages(),
-                userPage.hasNext(),
-                userPage.hasPrevious()
+                pagination.page(),
+                pagination.size(),
+                pagination.totalElements(),
+                pagination.totalPages(),
+                pagination.hasNext(),
+                pagination.hasPrevious()
         );
     }
 

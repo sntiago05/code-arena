@@ -5,12 +5,16 @@ import com.sntiago05.codearena.application.ports.in.command.getusers.GetUsersCom
 import com.sntiago05.codearena.application.ports.in.command.getusers.UserSortField;
 import com.sntiago05.codearena.application.ports.in.command.getusers.UserSortOrder;
 import com.sntiago05.codearena.application.ports.in.result.GetUsersResult;
-import com.sntiago05.codearena.application.ports.out.data.UserPage;
+import com.sntiago05.codearena.application.ports.out.data.PaginationMeta;
+import com.sntiago05.codearena.application.ports.out.data.PageData;
 import com.sntiago05.codearena.application.ports.out.data.UserQuery;
-import com.sntiago05.codearena.domain.user.User;
+import com.sntiago05.codearena.application.ports.out.data.UserSummaryData;
+import com.sntiago05.codearena.domain.user.UserRole;
+import com.sntiago05.codearena.domain.user.UserState;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,10 +65,11 @@ class GetUsersMapperTest {
 
     @Test
     void shouldMapToGetUsersResult() {
-        User user1 = User.createPlayer("Alice", "alice@example.com", "pass");
-        User user2 = User.createPlayer("Bob", "bob@example.com", "pass");
+        UserSummaryData user1 = new UserSummaryData(UUID.randomUUID(), "Alice", "alice@example.com", UserRole.PLAYER, UserState.ACTIVE);
+        UserSummaryData user2 = new UserSummaryData(UUID.randomUUID(), "Bob", "bob@example.com", UserRole.PLAYER, UserState.ACTIVE);
 
-        UserPage userPage = new UserPage(List.of(user1, user2), 0, 10, 2L, 1, false, false);
+        PaginationMeta pagination = new PaginationMeta(0, 10, 2L, 1, false, false);
+        PageData<UserSummaryData> userPage = new PageData<>(List.of(user1, user2), pagination);
 
         GetUsersResult result = GetUsersMapper.toGetUsersResult(userPage);
 

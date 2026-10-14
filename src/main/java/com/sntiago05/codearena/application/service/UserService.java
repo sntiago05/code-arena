@@ -14,8 +14,9 @@ import com.sntiago05.codearena.application.ports.in.result.RegisterUserResult;
 import com.sntiago05.codearena.application.ports.out.ParticipationRepositoryPort;
 import com.sntiago05.codearena.application.ports.out.PasswordHasherPort;
 import com.sntiago05.codearena.application.ports.out.UserRepositoryPort;
-import com.sntiago05.codearena.application.ports.out.data.UserPage;
+import com.sntiago05.codearena.application.ports.out.data.PageData;
 import com.sntiago05.codearena.application.ports.out.data.UserQuery;
+import com.sntiago05.codearena.application.ports.out.data.UserSummaryData;
 import com.sntiago05.codearena.application.service.mapper.userservicemapper.GetMyProfileMapper;
 import com.sntiago05.codearena.application.service.mapper.userservicemapper.GetUsersMapper;
 import com.sntiago05.codearena.application.service.mapper.userservicemapper.RegisterUserMapper;
@@ -65,7 +66,7 @@ public class UserService implements RegisterUserUseCase, GetMyProfileUseCase, Ge
     @Override
     public GetUsersResult getUsers(GetUsersCommand command) {
         UserQuery query = GetUsersMapper.toUserQuery(command);
-        UserPage userPage = userRepositoryPort.findPage(query);
+        PageData<UserSummaryData> userPage = userRepositoryPort.findPage(query);
         return GetUsersMapper.toGetUsersResult(userPage);
     }
 
