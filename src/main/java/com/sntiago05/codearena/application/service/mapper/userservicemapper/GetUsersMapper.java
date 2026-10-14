@@ -7,48 +7,75 @@ import com.sntiago05.codearena.application.ports.in.command.getusers.UserSortOrd
 import com.sntiago05.codearena.application.ports.in.result.GetUsersResult;
 import com.sntiago05.codearena.application.ports.in.result.PaginationResult;
 import com.sntiago05.codearena.application.ports.in.result.UserSummaryResult;
-import com.sntiago05.codearena.application.ports.out.data.PaginationMeta;
 import com.sntiago05.codearena.application.ports.out.data.PageData;
+import com.sntiago05.codearena.application.ports.out.data.PaginationMeta;
 import com.sntiago05.codearena.application.ports.out.data.UserQuery;
 import com.sntiago05.codearena.application.ports.out.data.UserSummaryData;
 
+import java.util.Objects;
+
+/**
+ * Mapper utility for transforming user query commands, pagination metadata,
+ * and paginated user summaries between application input and output ports.
+ */
 public final class GetUsersMapper {
+
+    private static final UserSortField DEFAULT_SORT_FIELD = UserSortField.NAME;
+    private static final UserSortOrder DEFAULT_SORT_ORDER = UserSortOrder.ASCENDING;
 
     private GetUsersMapper() {
     }
 
+    /**
+     * Converts a {@link GetUsersCommand} into a {@link UserQuery} data port object.
+     *
+     * @param command the user query command
+     * @return the query object for the repository port
+     * @throws InvalidCommandException if the command or its parameters are invalid
+     */
     public static UserQuery toUserQuery(GetUsersCommand command) {
         validateGetUsersCommand(command);
 
-        var inSortField = command.sortField() != null ? command.sortField() : UserSortField.NAME;
-        var inSortOrder = command.order() != null ? command.order() : UserSortOrder.ASCENDING;
+        var sortField = Objects.requireNonNullElse(command.sortField(), DEFAULT_SORT_FIELD);
+        var sortOrder = Objects.requireNonNullElse(command.order(), DEFAULT_SORT_ORDER);
 
         return new UserQuery(
                 command.page(),
                 command.size(),
-                mapSortField(inSortField),
-                mapSortOrder(inSortOrder)
+                mapSortField(sortField),
+                mapSortOrder(sortOrder)
         );
     }
 
+    /**
+     * Converts a paginated list of {@link UserSummaryData} into a {@link GetUsersResult}.
+     *
+     * @param userPage page containing user summary data and pagination metadata
+     * @return the result containing user summaries and pagination
+     */
     public static GetUsersResult toGetUsersResult(PageData<UserSummaryData> userPage) {
-        PaginationResult pagination = getPagination(userPage.pagination());
+        Objects.requireNonNull(userPage, "userPage cannot be null");
 
-        PageData<UserSummaryResult> resultPage = userPage.map(user -> new UserSummaryResult(
-                user.name(),
-                user.email(),
-                user.role(),
-                user.state()
-        ));
+        PageData<UserSummaryResult> resultPage = userPage.map(GetUsersMapper::toUserSummaryResult);
+        PaginationResult pagination = toPaginationResult(resultPage.pagination());
 
         return new GetUsersResult(pagination, resultPage.content());
     }
 
-    public static GetUsersResult toResult(PageData<UserSummaryData> userPage) {
-        return toGetUsersResult(userPage);
+    private static UserSummaryResult toUserSummaryResult(UserSummaryData user) {
+        return new UserSummaryResult(
+                user.name(),
+                user.email(),
+                user.role(),
+                user.state()
+        );
     }
 
-    private static PaginationResult getPagination(PaginationMeta pagination) {
+    private static PaginationResult toPaginationResult(PaginationMeta pagination) {
+        if (pagination == null) {
+            return null;
+        }
+
         return new PaginationResult(
                 pagination.page(),
                 pagination.size(),
@@ -75,8 +102,8 @@ public final class GetUsersMapper {
         }
     }
 
-    private static com.sntiago05.codearena.application.ports.out.data.UserSortField mapSortField(UserSortField inSortField) {
-        return switch (inSortField) {
+    private static com.sntiago05.codearena.application.ports.out.data.UserSortField mapSortField(UserSortField sortField) {
+        return switch (sortField) {
             case NAME -> com.sntiago05.codearena.application.ports.out.data.UserSortField.NAME;
             case EMAIL -> com.sntiago05.codearena.application.ports.out.data.UserSortField.EMAIL;
             case STATE -> com.sntiago05.codearena.application.ports.out.data.UserSortField.STATE;
@@ -84,8 +111,8 @@ public final class GetUsersMapper {
         };
     }
 
-    private static com.sntiago05.codearena.application.ports.out.data.UserSortOrder mapSortOrder(UserSortOrder inSortOrder) {
-        return switch (inSortOrder) {
+    private static com.sntiago05.codearena.application.ports.out.data.UserSortOrder mapSortOrder(UserSortOrder sortOrder) {
+        return switch (sortOrder) {
             case ASCENDING -> com.sntiago05.codearena.application.ports.out.data.UserSortOrder.ASCENDING;
             case DESCENDING -> com.sntiago05.codearena.application.ports.out.data.UserSortOrder.DESCENDING;
         };

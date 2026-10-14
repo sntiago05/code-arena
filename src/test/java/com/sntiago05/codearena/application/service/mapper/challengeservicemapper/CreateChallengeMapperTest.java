@@ -45,7 +45,7 @@ class CreateChallengeMapperTest {
     }
 
     @Test
-    void shouldMapChallengeToChallengeCreated() {
+    void shouldMapChallengeToResult() {
         ChallengeCategory category = new ChallengeCategory(UUID.randomUUID(), "Algorithms", "Algorithmic challenges");
         Challenge challenge = new Challenge(
                 "Two Sum",
@@ -56,7 +56,7 @@ class CreateChallengeMapperTest {
                 null
         );
 
-        ChallengeCreated result = CreateChallengeMapper.toChallengeCreated(challenge);
+        ChallengeCreated result = CreateChallengeMapper.toResult(challenge);
 
         assertNotNull(result);
         assertEquals(challenge.getId(), result.id());
@@ -64,25 +64,5 @@ class CreateChallengeMapperTest {
         assertEquals("Find indices summing to target", result.description());
         assertEquals(ChallengeDifficulty.MEDIUM, result.difficulty());
         assertEquals(ChallengeState.INACTIVE, result.state());
-    }
-
-    @Test
-    void shouldMapChallengeToResult() {
-        ChallengeCategory category = new ChallengeCategory(UUID.randomUUID(), "Algorithms", "Algorithmic challenges");
-        Challenge challenge = new Challenge(
-                "Two Sum",
-                "Find indices summing to target",
-                category,
-                ChallengeDifficulty.HARD,
-                null,
-                null
-        );
-
-        ChallengeCreated result = CreateChallengeMapper.toResult(challenge);
-
-        assertNotNull(result);
-        assertEquals(challenge.getId(), result.id());
-        assertEquals("Two Sum", result.title());
-        assertEquals(ChallengeDifficulty.HARD, result.difficulty());
     }
 }

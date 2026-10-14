@@ -1,6 +1,7 @@
 package com.sntiago05.codearena.domain.challenge;
 
 import com.sntiago05.codearena.domain.utils.ValidationUtils;
+import lombok.Getter;
 
 import java.util.UUID;
 
@@ -8,7 +9,7 @@ import java.util.UUID;
  * Represents a category for organizing challenges.
  */
 public class ChallengeCategory {
-
+    @Getter
     private UUID id;
     private String name;
     private String description;

@@ -20,7 +20,7 @@ public final class CreateChallengeMapper {
         );
     }
 
-    public static ChallengeCreated toChallengeCreated(Challenge challenge) {
+    public static ChallengeCreated toResult(Challenge challenge) {
         return new ChallengeCreated(
                 challenge.getId(),
                 challenge.getTitle(),
@@ -28,9 +28,5 @@ public final class CreateChallengeMapper {
                 challenge.getDifficulty(),
                 challenge.getState()
         );
-    }
-
-    public static ChallengeCreated toResult(Challenge challenge) {
-        return toChallengeCreated(challenge);
     }
 }
