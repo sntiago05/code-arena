@@ -28,7 +28,7 @@ Java, Spring Boot, Spring Data JPA, PostgreSQL, Docker Compose, Maven Wrapper.
 La conexión usa las variables `DB_HOST`, `DB_PORT` y `DB_NAME` (valores por defecto en `application.yaml`).
 
 
-## Deuda técnica y limitaciones conocidas
+## Deuda técnica
 
 - **Contraseña de base de datos por defecto:** `application.yaml` usa `${DB_PASSWORD:123}`. El valor por defecto debe eliminarse para que la aplicación falle si no se configura la variable.
 - **Utilidad dentro de `src/main`:** `SecreteGenerator.java` genera la clave JWT y está en el código de la aplicación. Debería moverse a una herramienta aparte o eliminarse.
